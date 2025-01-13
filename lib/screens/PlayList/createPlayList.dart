@@ -22,7 +22,6 @@ class _CreatePlayListScreenState extends State<CreatePlayListScreen> {
           Positioned(
             top: -130,
             left: -130,
-      
             child: Container(
                       width: 250,
                       height: 250,
