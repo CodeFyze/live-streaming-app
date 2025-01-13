@@ -17,6 +17,7 @@ class _CreatePlayListScreenState extends State<CreatePlayListScreen> {
       backgroundColor: AppColor.primary, // Dark background color
       body: SingleChildScrollView(
         child: Stack(
+
           // mainAxisAlignment: MainAxisAlignment.start,
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
