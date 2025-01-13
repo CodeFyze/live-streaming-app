@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
        // primarySwatch: Colors.deepPurple,
               textTheme: GoogleFonts.robotoTextTheme(),
       ),
-      home: Home(),
+      home: CreatePlayListScreen(),
     );
   }
 }
