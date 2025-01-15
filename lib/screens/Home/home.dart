@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
 import 'package:live_streaming/common/appUtills.dart';
+import 'package:live_streaming/screens/widgets/moviesListWidget.dart';
 import 'package:live_streaming/screens/widgets/myBottomBar.dart';
 import 'package:live_streaming/screens/widgets/myDrawer.dart';
 
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       backgroundColor: AppColor.primary,
       appBar: AppBar(
         backgroundColor: AppColor.primary,
@@ -34,13 +36,12 @@ class _HomeState extends State<Home> {
           color: AppColor.white
         ),),
       ),
-      drawer: MyDrawer(),
-      bottomNavigationBar: MyBottomBar(),
+     
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 250),
+            SizedBox(height: 200),
             // Centered Movie Title
             Center(
               child: Text(
@@ -77,52 +78,10 @@ class _HomeState extends State<Home> {
                 scrollDirection: Axis.horizontal,
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Movie Card
-                        Container(
-                          width: 120,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            color: AppColor.primaryTransparent, // Dark purple for cards
-                            image: DecorationImage(
-                              image: AssetImage(
-                                appUtills.netflixLogo),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        
-                        child:Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 8),
-                            
-                            // Movie Title
-                            SizedBox(
-                              width: 100,
-                              child: Text(
-                                '${movies[index]['title']} (${movies[index]['year']})',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            
-                          ],
-                        ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                  return MoviesListWidget(
+                    movies: movies,
+                   index: index);
+                  }
               ),
             ),
             SizedBox(height: 40),
@@ -147,50 +106,9 @@ class _HomeState extends State<Home> {
                 scrollDirection: Axis.horizontal,
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Movie Card
-                        Container(
-                          width: 120,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                appUtills.netflixLogo),fit: BoxFit.cover),
-                            color: AppColor.primaryTransparent, // Dark purple for cards
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        
-                        child:Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 8),
-                            
-                            // Movie Title
-                            SizedBox(
-                              width: 100,
-                              child: Text(
-                                '${movies[index]['title']} (${movies[index]['year']})',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            
-                          ],
-                        ),
-                        ),
-                      ],
-                    ),
-                  );
+                  return  MoviesListWidget(
+                    movies: movies,
+                   index: index);
                 },
               ),
             ),

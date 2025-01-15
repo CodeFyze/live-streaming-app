@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
 import 'package:live_streaming/screens/Home/home.dart';
+import 'package:live_streaming/screens/mainScreen.dart';
 
 class MyPlaylist extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class MyPlaylist extends StatelessWidget {
         children: [
           // Background design
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
             child: Text(
             'My Playlists',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: AppColor.white),
@@ -31,7 +32,7 @@ class MyPlaylist extends StatelessWidget {
           ),
           // Add Playlist button
           Positioned(
-            top: 20,
+            top: 28,
             right: 20,
             child: Row(
               children: [
@@ -86,7 +87,7 @@ class MyPlaylist extends StatelessWidget {
                       Spacer(),
                       GestureDetector(
                         onTap: (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>mainScreen()));
                         },
                         child: Icon(Icons.arrow_forward_ios, color: Colors.white)),
                     ],

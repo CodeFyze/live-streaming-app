@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
+import 'package:live_streaming/screens/AccountInfo/accountInfo.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -16,8 +17,8 @@ class MyDrawer extends StatelessWidget {
               // Slightly lighter background for the header
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
- color: AppColor.primaryTransparent,
- borderRadius: BorderRadius.circular(16)
+              color: AppColor.primaryTransparent,
+              borderRadius: BorderRadius.circular(16)
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +48,11 @@ class MyDrawer extends StatelessWidget {
                         ],
                       ),
                       Spacer(),
-                      Icon(Icons.arrow_forward_ios, color: Colors.white),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>AccountInfo()));
+                        },
+                        child: Icon(Icons.arrow_forward_ios, color: Colors.white)),
                     ],
                   ),
                   SizedBox(height: 8),
