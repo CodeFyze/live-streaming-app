@@ -7,6 +7,7 @@ class AppColor{
     static const buttonRed =  Color(0xFFc10100);
    static const white =  Color(0xFFFFFFFF);
    static const darkGrey =  Color(0xFF121212);
+    static const lightGrey =  Color(0x3BFFFFFF);
  static const primaryTransparent= Color.fromARGB(50, 45, 0, 54);
    
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
 import 'package:live_streaming/screens/AccountInfo/accountInfo.dart';
+import 'package:live_streaming/screens/Downloads/DownloadOne.dart';
+import 'package:live_streaming/screens/WatchHistory/watchHistory.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -76,14 +78,20 @@ class MyDrawer extends StatelessWidget {
             SizedBox(height: 10),
 
             // Drawer Items
-            _buildDrawerItem(Icons.playlist_play, 'My Playlists', context),
-            _buildDrawerItem(Icons.download, 'Downloader 1', context),
-            _buildDrawerItem(Icons.download, 'Downloader 2', context),
-            _buildDrawerItem(Icons.movie, 'Catchup', context),
-            _buildDrawerItem(Icons.history, 'Watch History', context),
-            _buildDrawerItem(Icons.grid_view, 'Multi-Screen', context),
-            _buildDrawerItem(Icons.play_circle_filled, 'External Players', context),
-            _buildDrawerItem(Icons.radio, 'Radio', context, trailingWidget: Text(
+            _buildDrawerItem(Icons.playlist_play, 'My Playlists', context,(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>WatchHistory()));
+            }),
+            _buildDrawerItem(Icons.download, 'Downloader 1', context,(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Download(title: "Downloader 1")));
+            }),
+            _buildDrawerItem(Icons.download, 'Downloader 2', context,(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Download(title: "Downloader 2")));
+            }),
+            _buildDrawerItem(Icons.movie, 'Catchup', context,(){}),
+            _buildDrawerItem(Icons.history, 'Watch History', context,(){}),
+            _buildDrawerItem(Icons.grid_view, 'Multi-Screen', context,(){}),
+            _buildDrawerItem(Icons.play_circle_filled, 'External Players', context,(){}),
+            _buildDrawerItem(Icons.radio, 'Radio', context,(){}, trailingWidget: Text(
               'VIP',
               style: TextStyle(
                 color: Colors.yellow,
@@ -104,14 +112,14 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            _buildDrawerItem(Icons.refresh, 'Force Refresh', context),
+            _buildDrawerItem(Icons.refresh, 'Force Refresh', context,(){}),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title, BuildContext context, {Widget? trailingWidget}) {
+  Widget _buildDrawerItem(IconData icon, String title, BuildContext context,VoidCallback onTap, {Widget? trailingWidget}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Container(
@@ -130,10 +138,7 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           trailing: trailingWidget,
-          onTap: () {
-            // Handle item tap
-            Navigator.pop(context); // Close the drawer
-          },
+          onTap: onTap
         ),
       ),
     );
