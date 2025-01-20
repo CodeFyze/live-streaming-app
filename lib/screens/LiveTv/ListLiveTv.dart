@@ -47,7 +47,7 @@ class ListLiveTv extends StatelessWidget {
           return InkWell(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>MovieDetailWidget()));  
-              
+                
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
