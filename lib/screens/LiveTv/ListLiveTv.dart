@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
+import 'package:live_streaming/screens/widgets/movieDetailSeries.dart';
 
 class ListLiveTv extends StatelessWidget {
   final List<Map<String, String>> liveTvChannels = [
@@ -43,33 +44,38 @@ class ListLiveTv extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         itemCount: liveTvChannels.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Placeholder for image
-                Container(
-                  width: 90,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryTransparent,
-                   // borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                SizedBox(width: 16),
-                // Channel Index and Title
-                Expanded(
-                  child: Text(
-                    '${liveTvChannels[index]['index']} - ${liveTvChannels[index]['title']}',
-                    style: TextStyle(
-                      color: AppColor.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+          return InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>MovieDetailWidget()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Placeholder for image
+                  Container(
+                    width: 90,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: AppColor.primaryTransparent,
+                     // borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(width: 16),
+                  // Channel Index and Title
+                  Expanded(
+                    child: Text(
+                      '${liveTvChannels[index]['index']} - ${liveTvChannels[index]['title']}',
+                      style: TextStyle(
+                        color: AppColor.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

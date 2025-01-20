@@ -11,6 +11,8 @@ import 'package:live_streaming/screens/PlayList/myPlaylist.dart';
 import 'package:live_streaming/screens/Series/Series.dart';
 import 'package:live_streaming/screens/WatchHistory/watchHistory.dart';
 import 'package:live_streaming/screens/mainScreen.dart';
+import 'package:live_streaming/screens/widgets/movieDetailSeries.dart';
+import 'package:live_streaming/screens/widgets/moviesListWidget.dart';
 import 'package:live_streaming/screens/widgets/videoPlayerWidget.dart';
 
 void main() {
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
       scaffoldBackgroundColor: AppColor.primary,
               textTheme: GoogleFonts.robotoTextTheme(),
       ),
-      home: CustomVideoPlayerScreen(videoUrl: "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"),
+      home: CreatePlayListScreen(),
     );
   }
 }

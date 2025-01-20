@@ -106,7 +106,7 @@ class MyPlaylist extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      //Navigator.pop(context);
                     },
                     icon: Icon(Icons.check, color: Colors.white),
                     label: Text(
