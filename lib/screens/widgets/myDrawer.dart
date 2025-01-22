@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
 import 'package:live_streaming/screens/AccountInfo/accountInfo.dart';
 import 'package:live_streaming/screens/Downloads/DownloadOne.dart';
+import 'package:live_streaming/screens/ListOrder/listOrder.dart';
 import 'package:live_streaming/screens/WatchHistory/watchHistory.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -113,6 +114,27 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             _buildDrawerItem(Icons.refresh, 'Force Refresh', context,(){}),
+            _buildDrawerItem(Icons.refresh_sharp, 'Refresh EPG', context,(){}),
+
+            // Actions Section
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Settings',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            _buildDrawerItem(Icons.double_arrow, 'Tabs Setting', context,(){}),
+            _buildDrawerItem(Icons.add_box, 'App Themes', context,(){}),
+            _buildDrawerItem(Icons.language, 'Language', context,(){}),
+            _buildDrawerItem(Icons.person, 'Parental Control', context,(){}),
+            _buildDrawerItem(Icons.list, 'List Order', context,(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>ListOrder()));
+            }),
+            _buildDrawerItem(Icons.settings, 'Other Settings', context,(){}),
           ],
         ),
       ),
