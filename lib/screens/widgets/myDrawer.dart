@@ -3,6 +3,7 @@ import 'package:live_streaming/common/AppColor.dart';
 import 'package:live_streaming/screens/AccountInfo/accountInfo.dart';
 import 'package:live_streaming/screens/Downloads/DownloadOne.dart';
 import 'package:live_streaming/screens/ListOrder/listOrder.dart';
+import 'package:live_streaming/screens/MultiScreen/multiScreen.dart';
 import 'package:live_streaming/screens/WatchHistory/watchHistory.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -90,7 +91,9 @@ class MyDrawer extends StatelessWidget {
             }),
             _buildDrawerItem(Icons.movie, 'Catchup', context,(){}),
             _buildDrawerItem(Icons.history, 'Watch History', context,(){}),
-            _buildDrawerItem(Icons.grid_view, 'Multi-Screen', context,(){}),
+            _buildDrawerItem(Icons.grid_view, 'Multi-Screen', context,(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>MultiScreen()));
+            }),
             _buildDrawerItem(Icons.play_circle_filled, 'External Players', context,(){}),
             _buildDrawerItem(Icons.radio, 'Radio', context,(){}, trailingWidget: Text(
               'VIP',

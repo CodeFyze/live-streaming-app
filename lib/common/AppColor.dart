@@ -9,5 +9,6 @@ class AppColor{
    static const darkGrey =  Color(0xFF121212);
     static const lightGrey =  Color(0x3BFFFFFF);
  static const primaryTransparent= Color.fromARGB(50, 45, 0, 54);
+ static const orange= Color.fromARGB(255, 249, 183, 0);
    
 }
