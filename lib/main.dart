@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/common/AppColor.dart';
-import 'package:live_streaming/screens/AccountInfo/accountInfo.dart';
-import 'package:live_streaming/screens/Downloads/DownloadOne.dart';
-import 'package:live_streaming/screens/Home/home.dart';
-import 'package:live_streaming/screens/ListOrder/listOrder.dart';
-import 'package:live_streaming/screens/LiveTv/liveTv.dart';
-import 'package:live_streaming/screens/Movies/Movies.dart';
 import 'package:live_streaming/screens/PlayList/createPlayList.dart';
-import 'package:live_streaming/screens/PlayList/myPlaylist.dart';
-import 'package:live_streaming/screens/Series/Series.dart';
-import 'package:live_streaming/screens/WatchHistory/watchHistory.dart';
-import 'package:live_streaming/screens/mainScreen.dart';
-import 'package:live_streaming/screens/widgets/movieDetailSeries.dart';
-import 'package:live_streaming/screens/widgets/moviesListWidget.dart';
-import 'package:live_streaming/screens/widgets/videoPlayerWidget.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+// Global ValueNotifiers for theme colors
+ValueNotifier<Color> appThemeColor = ValueNotifier(AppColor.primary);
+ValueNotifier<Color> appBarThemeColor =
+    ValueNotifier(AppColor.primaryTransparent);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MR.XTv',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primary),
-      scaffoldBackgroundColor: AppColor.primary,
-              textTheme: GoogleFonts.robotoTextTheme(),
-      ),
-      home: CreatePlayListScreen(),
+    return ValueListenableBuilder<Color>(
+      valueListenable: appThemeColor,
+      builder: (context, bodyColor, child) {
+        return ValueListenableBuilder<Color>(
+          valueListenable: appBarThemeColor,
+          builder: (context, appBarColor, child) {
+            return MaterialApp(
+              title: 'MR.XTv',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                  scaffoldBackgroundColor: bodyColor, // Body background color
+                  textTheme: GoogleFonts.robotoTextTheme(),
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: appBarColor, // AppBar background color
+                  ),
+                  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                    backgroundColor: appBarColor,
+                  ),
+                  drawerTheme: DrawerThemeData(
+                    backgroundColor: bodyColor,
+                  )),
+              home: CreatePlayListScreen(), // Replace with your initial screen
+            );
+          },
+        );
+      },
     );
   }
 }
-

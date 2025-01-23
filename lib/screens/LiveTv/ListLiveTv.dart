@@ -30,7 +30,7 @@ class _ListLiveTvState extends State<ListLiveTv> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary, // Dark background color
+     // backgroundColor: AppColor.primary, // Dark background color
       appBar: AppBar(
         title: Text('All',style: TextStyle(
           color: AppColor.white,

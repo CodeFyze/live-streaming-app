@@ -15,9 +15,9 @@ class MovieDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      //backgroundColor: AppColor.primary,
       appBar: AppBar(
-        backgroundColor: AppColor.primary,
+       // backgroundColor: AppColor.primary,
       
         actions: [
           Icon(Icons.cast, color: AppColor.white),

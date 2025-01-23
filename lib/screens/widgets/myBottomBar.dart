@@ -15,7 +15,7 @@ class MyBottomBar extends StatelessWidget {
         highlightColor: Colors.transparent, // Remove the highlight effect
       ),
       child: BottomNavigationBar(
-        backgroundColor: Color(0xFF1A001F), // Dark background color
+        //backgroundColor: Color(0xFF1A001F), // Dark background color
         type: BottomNavigationBarType.fixed, // Ensures all icons are evenly spaced
         selectedItemColor: Colors.white, // Selected icon color
         unselectedItemColor: Colors.white70, // Unselected icon color

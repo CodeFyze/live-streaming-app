@@ -26,9 +26,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MyDrawer(),
-      backgroundColor: AppColor.primary,
+     // backgroundColor: AppColor.primary,
       appBar: AppBar(
-        backgroundColor: AppColor.primary,
+       // backgroundColor: AppColor.primary,
         iconTheme: IconThemeData(
           color: AppColor.white,
         ),

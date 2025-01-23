@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/common/AppColor.dart';
 import 'package:live_streaming/screens/AccountInfo/accountInfo.dart';
+import 'package:live_streaming/screens/AppThemes/appThemes.dart';
 import 'package:live_streaming/screens/Downloads/DownloadOne.dart';
 import 'package:live_streaming/screens/ListOrder/listOrder.dart';
 import 'package:live_streaming/screens/MultiScreen/multiScreen.dart';
@@ -11,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: AppColor.primary, 
+        //color: AppColor.primary, 
          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 40),
          
         child: ListView(
@@ -131,7 +132,9 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             _buildDrawerItem(Icons.double_arrow, 'Tabs Setting', context,(){}),
-            _buildDrawerItem(Icons.add_box, 'App Themes', context,(){}),
+            _buildDrawerItem(Icons.add_box, 'App Themes', context,(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>AppThemeScreen()));
+            }),
             _buildDrawerItem(Icons.language, 'Language', context,(){}),
             _buildDrawerItem(Icons.person, 'Parental Control', context,(){}),
             _buildDrawerItem(Icons.list, 'List Order', context,(){
