@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/common/AppColor.dart';
+import 'package:live_streaming/controller/provider/AppState.dart';
 import 'package:live_streaming/screens/PlayList/createPlayList.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+    ChangeNotifierProvider<AppStateModel>(
+      create: (_) => AppStateModel(),
+    )
+  ],
+    child:  MyApp()));
 }
 
 // Global ValueNotifiers for theme colors

@@ -1,40 +1,52 @@
+import 'dart:developer';
+
 import 'package:battery/battery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:live_streaming/common/AppColor.dart';
+import 'package:live_streaming/controller/provider/AppState.dart';
+import 'package:live_streaming/screens/mainScreen.dart';
+import 'package:live_streaming/screens/widgets/globalVideoPlayer.dart';
+import 'package:live_streaming/screens/widgets/homeWidget.dart';
+import 'package:pip_view/pip_view.dart';
+import 'package:provider/provider.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 
 class CustomVideoPlayerScreen extends StatefulWidget {
-  final String videoUrl;
-
-  const CustomVideoPlayerScreen({Key? key, required this.videoUrl}) : super(key: key);
+  String videoUrl;
+   CustomVideoPlayerScreen({Key? key, required this.videoUrl}) : super(key: key);
 
   @override
   _CustomVideoPlayerScreenState createState() => _CustomVideoPlayerScreenState();
 }
 
 class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
- late VideoPlayerController _controller;
+VideoPlayerController? _controller;
   bool _isPlaying = false;
   bool _showControls = true;
+  bool _isMinimized = false;
   final Battery _battery = Battery();
   int _batteryLevel = 0;
   double _brightness = 0.5;
   double _volume = 0.7;
   double _playbackSpeed = 1.0;
+   Offset _pipOffset = Offset(10, 100);
+  final GlobalVideoPlayerManager _playerManager = GlobalVideoPlayerManager();
 
   @override
   void initState() {
     super.initState();
+    PIPView.of(context)?.deactivate();
     _initializePlayer();
     _setLandscapeOrientation();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     _fetchBatteryLevel();
     _initializeBrightness();
     _initializeVolume();
+    //_playerManager.initialize(widget.videoUrl);
   }
 
   Future<void> _fetchBatteryLevel() async {
@@ -77,9 +89,9 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
   }
 
   Future<void> _setPlaybackSpeed(double speed) async {
-  if (_controller.value.isInitialized) {
+  if (_controller!.value.isInitialized) {
     try {
-      await _controller.setPlaybackSpeed(speed);
+      await _controller!.setPlaybackSpeed(speed);
       setState(() {
         _playbackSpeed = speed;
       });
@@ -92,12 +104,13 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
   @override
   void dispose() {
     _resetOrientation();
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
   }
 
   void _initializePlayer() {
+    
     _controller = VideoPlayerController.network(widget.videoUrl)
       ..initialize().then((_) {
         setState(() {});
@@ -120,14 +133,27 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
 
   void _togglePlayPause() {
     setState(() {
-      if (_controller.value.isPlaying) {
-        _controller.pause();
+      if (_controller!.value.isPlaying) {
+        _controller!.pause();
         _isPlaying = false;
       } else {
-        _controller.play();
+        _controller!.play();
         _isPlaying = true;
       }
     });
+  }
+
+   void _toggleMinimize() {
+    setState(() {
+      _isMinimized = !_isMinimized;
+    });
+    if (_isMinimized) {
+      // Show the PIP view
+      PIPView.of(context)?.presentBelow(mainScreen());
+    } else {
+      // Close the PIP view
+      PIPView.of(context)?.deactivate();
+    }
   }
 
   Widget _buildControls() {
@@ -199,7 +225,7 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
           child: Column(
             children: [
               VideoProgressIndicator(
-                _controller,
+                _controller!,
                 allowScrubbing: true,
                 colors: VideoProgressColors(
                   playedColor: Colors.red,
@@ -212,7 +238,7 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${_formatDuration(_controller.value.position)} / ${_formatDuration(_controller.value.duration)}',
+                    '${_formatDuration(_controller!.value.position)} / ${_formatDuration(_controller!.value.duration)}',
                     style: TextStyle(color: Colors.white),
                   ),
                   Row(
@@ -248,8 +274,16 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.fullscreen, color: Colors.white),
-                        onPressed: () {},
+                        icon: Icon(Icons.fullscreen, color: Colors.white,size: 30,),
+                        onPressed: () {
+                           // debugger();
+                           _resetOrientation();
+                          
+                      PIPView.of(context)?.presentBelow(const mainScreen());
+                      setState(() {
+                        
+                      });
+                        },
                       ),
                     ],
                   ),
@@ -269,16 +303,16 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
               IconButton(
                 icon: Icon(Icons.replay_10, color: Colors.white, size: 36),
                 onPressed: () {
-                  _controller.seekTo(
-                    _controller.value.position - Duration(seconds: 10),
+                  _controller!.seekTo(
+                    _controller!.value.position - Duration(seconds: 10),
                   );
                 },
               ),
               IconButton(
                 icon: Icon(Icons.forward_10, color: Colors.white, size: 36),
                 onPressed: () {
-                  _controller.seekTo(
-                    _controller.value.position + Duration(seconds: 10),
+                  _controller!.seekTo(
+                    _controller!.value.position + Duration(seconds: 10),
                   );
                 },
               ),
@@ -289,32 +323,120 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
     );
   }
 
+
+  Widget _buildMinimizedPlayer() {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      // Ensure the draggable player stays within the screen bounds
+      double maxX = constraints.maxWidth - 50; // Width of the minimized player
+      double maxY = constraints.maxHeight - 30; // Height of the minimized player
+
+      return Positioned(
+        left: _pipOffset.dx.clamp(0, maxX), // Clamp the position to prevent overflow
+        top: _pipOffset.dy.clamp(0, maxY),
+        child: GestureDetector(
+          onPanUpdate: (details) {
+            setState(() {
+              _pipOffset = Offset(
+                (_pipOffset.dx + details.delta.dx).clamp(0, maxX),
+                (_pipOffset.dy + details.delta.dy).clamp(0, maxY),
+              );
+            });
+          },
+          child: Container(
+            width: 150,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Stack(
+              children: [
+                AspectRatio(
+                  aspectRatio: _controller!.value.aspectRatio,
+                  child: VideoPlayer(_playerManager.controller),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.close, color: Colors.white),
+                    onPressed: (){
+                    
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
   String _formatDuration(Duration position) {
     final minutes = position.inMinutes;
     final seconds = position.inSeconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _controller.value.isInitialized
-          ? GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showControls = !_showControls;
-                });
+
+  Widget _buildVideoPlayer(){
+    return PIPView(
+      builder: (context,isFloating) {
+        return Scaffold(
+          
+          body:Stack(
+            children: [
+              _controller!.value.isInitialized
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _showControls = !_showControls;
+                        });
+                      },
+                      child: Stack(
+                        children: [
+                         VideoPlayer(_controller!),
+                          if (_showControls) _buildControls(),
+                        ],
+                      ),
+                    )
+                  : Center(child: CircularProgressIndicator()),
+
+                  Positioned(
+            bottom: 8.5,
+            right: 8.5,
+            child: IconButton(
+              icon: Icon(Icons.fullscreen, color: Colors.white,size: 30,),
+              onPressed: () {
+                
+                  // Trigger PIP to show below the main screen when minimized
+                  _resetOrientation();
+                  PIPView.of(context)?.presentBelow(mainScreen());
+                  
+                _isMinimized=true;
+                //  else {
+                //   debugger();
+                //   _setLandscapeOrientation();
+                //   PIPView.of(context)?.deactivate();
+                //   // Handle the state for when it is not minimized
+                //   // Reset or move back to full-screen if necessary
+                // }
               },
-              child: Stack(
-                children: [
-                 VideoPlayer(_controller),
-                  if (_showControls) _buildControls(),
-                ],
-              ),
-            )
-          : Center(child: CircularProgressIndicator()),
+            ),
+          ),
+
+          
+            ],
+          ),
+        );
+      }
     );
   }
+
+
 
 
   void _showControlPopup() {
@@ -482,6 +604,7 @@ class _CustomVideoPlayerScreenState extends State<CustomVideoPlayerScreen> {
     );
   }
 
+
 final double defaultBrightness = 0.5;
   final double defaultVolume = 0.7;
   final double defaultPlaybackSpeed = 1.0;
@@ -496,6 +619,19 @@ final double defaultBrightness = 0.5;
       _volume = defaultVolume;
       _playbackSpeed = defaultPlaybackSpeed;
     });
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+          children: [
+            _buildVideoPlayer(),
+          ],
+        ),
+      );
   }
 }
 
